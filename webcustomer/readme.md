@@ -1,6 +1,9 @@
 1. create docker network for the project
 
 ```docker network create webshop-network```
+```docker build -t ghcr.io/sevrin94/webshopcustomer .```
+
+```docker push ghcr.io/sevrin94/webshopcustomer```
 
 
 2.  start up the database
