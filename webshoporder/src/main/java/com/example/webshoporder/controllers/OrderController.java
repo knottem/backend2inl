@@ -7,6 +7,8 @@ import com.example.webshoporder.models.Order;
 import com.example.webshoporder.services.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +19,8 @@ import java.util.List;
 @RestController
 @Tag(name = "Order Controller", description = "Order API, get all orders, get order by id, buy item")
 public class OrderController {
+
+    private final Logger logger = LoggerFactory.getLogger(OrderController.class);
 
     private final OrderService orderService;
 
@@ -58,12 +62,9 @@ public class OrderController {
     // Exception handling for OrderNotFoundException
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(OrderNotFoundException.class)
-    public ErrorResponse handleCustomerNotFoundException(OrderNotFoundException exception) {
-        ErrorResponse error = new ErrorResponse();
-        error.setMessage(exception.getMessage());
-        error.setTimestamp(LocalDateTime.now());
-        error.setStatus(HttpStatus.NOT_FOUND);
-        System.out.println("OrderNotFoundException: " + exception.getMessage());
+    public ErrorResponse handleOrderNotFoundException(OrderNotFoundException exception) {
+        ErrorResponse error = new ErrorResponse(exception.getMessage(), LocalDateTime.now(), HttpStatus.NOT_FOUND);
+        logger.info("OrderNotFoundException: " + error);
         return error;
     }
 }
