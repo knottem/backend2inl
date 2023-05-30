@@ -21,7 +21,9 @@ public class WebSecurityConfig {
         //Setting roles
         http.authorizeHttpRequests(r -> r
                 .requestMatchers("/orders/buy").hasRole("ADMIN")
-                .requestMatchers("/orders","/orders/","/ordersitems", "/orders/**", "/ordersitems/**").permitAll());
+                .requestMatchers("/orders","/orders/","/ordersitems", "/orders/**", "/ordersitems/**").permitAll()
+                .requestMatchers("/").permitAll()
+                .requestMatchers("/swagger-ui/**", "/swagger-ui/index.html",  "/v3/api-docs/**").permitAll());
 
         //Use Basic Auth
         http.httpBasic(withDefaults());
