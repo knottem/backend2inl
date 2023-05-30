@@ -21,17 +21,17 @@ public class OrderController {
         return orderService.getAllOrders();
     }
 
-    @RequestMapping("/ordersitems")
+    @GetMapping("/ordersitems")
     public ResponseEntity<Object> getAllOrdersWithItems() {
         return orderService.getAllOrdersWithItems();
     }
 
-    @RequestMapping("/orders/{id}")
+    @GetMapping("/orders/{id}")
     public ResponseEntity<Object> getOrderById(@PathVariable long id) {
         return orderService.getOrderById(id);
     }
 
-    @RequestMapping("/ordersitems/{id}")
+    @GetMapping("/ordersitems/{id}")
     public ResponseEntity<Object> getOrderByIdWithItems(@PathVariable long id) {
         return orderService.getOrderByIdWithItems(id);
     }
