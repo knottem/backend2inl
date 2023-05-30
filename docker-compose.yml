@@ -1,0 +1,64 @@
+version: "3.9"
+
+networks:
+  webshop-network:
+    driver: bridge
+
+services:
+  webshopdatabase:
+    image: ${WEBSHOPDATABASEIMAGE}
+    container_name: databasecontainer
+    networks:
+      - webshop-network
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD-SHELL", "exit"]
+      interval: 20s
+      timeout: 30s
+
+  webshoporder:
+    image: ${WEBSHOPORDERIMAGE}
+    container_name: ordercontainer
+    networks:
+      - webshop-network
+    environment:
+      - DB_PASSWORD=${DB_PASSWORD}
+      - MYSQL_HOST=webshopdatabase
+      - ITEMS_SERVICE_HOST=${ITEMS_SERVICE_HOST}
+      - ITEMS_SERVICE_PORT=${ITEMS_SERVICE_PORT}
+      - CUSTOMERS_SERVICE_HOST=${CUSTOMERS_SERVICE_HOST}
+      - CUSTOMERS_SERVICE_PORT=${CUSTOMERS_SERVICE_PORT}
+    ports:
+      - "9090:8080"
+    depends_on:
+      webshopdatabase:
+        condition: service_healthy
+
+  webshopitem:
+    image: ${WEBSHOPITEMIMAGE}
+    container_name: itemcontainer
+    networks:
+      - webshop-network
+    environment:
+      - DB_PASSWORD=${DB_PASSWORD}
+      - MYSQL_HOST=webshopdatabase
+    ports:
+      - "9091:8080"
+    depends_on:
+      webshopdatabase:
+        condition: service_healthy
+
+  webshopcustomer:
+    image: ${WEBSHOPCUSTOMERIMAGE}
+    container_name: customercontainer
+    networks:
+      - webshop-network
+    environment:
+      - DB_PASSWORD=${DB_PASSWORD}
+      - MYSQL_HOST=webshopdatabase
+    ports:
+      - "9092:8080"
+    depends_on:
+      webshopdatabase:
+        condition: service_healthy
