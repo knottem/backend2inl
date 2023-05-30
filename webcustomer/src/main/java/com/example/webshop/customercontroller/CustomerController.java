@@ -52,7 +52,7 @@ public class CustomerController {
     public ResponseEntity<Object> getCustomerBool(@PathVariable long id) {
         boolean customerExists = customerRepository.findById(id).isPresent();
         if (!customerExists) {
-            return new ResponseEntity<>(false, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(false, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(true, HttpStatus.OK);
         }
