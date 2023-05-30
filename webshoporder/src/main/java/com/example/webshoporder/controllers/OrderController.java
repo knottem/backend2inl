@@ -58,6 +58,8 @@ public class OrderController {
         return orderService.buyItem(buyOrder);
     }
 
+
+    // Exception handling for OrderNotFoundException
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(OrderNotFoundException.class)
     public ErrorResponse handleOrderNotFoundException(OrderNotFoundException exception) {
