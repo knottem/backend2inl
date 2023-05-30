@@ -1,12 +1,17 @@
 package com.example.webshoporder.controllers;
 
+import com.example.webshoporder.exception.OrderNotFoundException;
 import com.example.webshoporder.models.BuyOrder;
+import com.example.webshoporder.models.ErrorResponse;
 import com.example.webshoporder.models.Order;
 import com.example.webshoporder.services.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -33,7 +38,7 @@ public class OrderController {
 
     @GetMapping("/orders/{id}")
     @Operation(summary = "Get order by id", description = "Get order by id and returns it")
-    public ResponseEntity<Object> getOrderById(@PathVariable long id) {
+    public Order getOrderById(@PathVariable long id) {
         return orderService.getOrderById(id);
     }
 
@@ -47,5 +52,16 @@ public class OrderController {
     @Operation(summary = "Buy item", description = "Buy item")
     public ResponseEntity<Object> buyItem(@RequestBody BuyOrder buyOrder) {
         return orderService.buyItem(buyOrder);
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler({ OrderNotFoundException.class })
+    public ErrorResponse handleCustomerNotFoundException(OrderNotFoundException exception) {
+        ErrorResponse error = new ErrorResponse();
+        error.setMessage(exception.getMessage());
+        error.setTimestamp(LocalDateTime.now());
+        error.setStatus(HttpStatus.NOT_FOUND);
+        System.out.println("OrderNotFoundException: " + exception.getMessage());
+        return error;
     }
 }
