@@ -66,6 +66,7 @@ public class OrderServiceImpl implements OrderService {
         return new ResponseEntity<>(ordersList, HttpStatus.OK);
     }
 
+    //Added proper exception handling to one method
     @Override
     public Order getOrderById(long id) {
        return orderRepository.findById(id).orElseThrow(() -> new OrderNotFoundException(id));
