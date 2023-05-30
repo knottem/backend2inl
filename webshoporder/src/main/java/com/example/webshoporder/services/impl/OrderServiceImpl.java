@@ -1,9 +1,11 @@
 package com.example.webshoporder.services.impl;
 
+import com.example.webshoporder.exception.OrderNotFoundException;
 import com.example.webshoporder.models.BuyOrder;
 import com.example.webshoporder.models.Item;
 import com.example.webshoporder.models.Order;
 import com.example.webshoporder.models.TestOrder;
+import com.example.webshoporder.models.ErrorResponse;
 import com.example.webshoporder.repositories.OrderRepository;
 import com.example.webshoporder.services.OrderService;
 import org.slf4j.Logger;
@@ -16,10 +18,12 @@ import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -63,13 +67,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public ResponseEntity<Object> getOrderById(long id) {
-        Order order = orderRepository.findById(id).orElse(null);
-        if (order == null) {
-            return new ResponseEntity<>(Collections.singletonMap("error", "Order not found"), HttpStatus.NOT_FOUND);
-        } else {
-            return new ResponseEntity<>(order, HttpStatus.OK);
-        }
+    public Order getOrderById(long id) {
+       return orderRepository.findById(id).orElseThrow(() -> new OrderNotFoundException(id));
     }
 
     @Override
