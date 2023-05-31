@@ -1,20 +1,7 @@
-# docker-compose
+# Backend2Inl
 
-## Docker Compose
-Simple docker-compose for school project, using mysql containers and spring boot api containers.
+A Project made for backend2 task, made by [Sevrin](https://github.com/Sevrin94), [Tom](https://github.com/king5tronk) and [Erik](https://github.com/knottem)
 
-## How to use
+## What is this?
 
-Be in the same directory as the docker-compose.yml file and run the following command:
-
-```bash
-docker compose up -d
-```
- 
-To stop the containers, run the following command:
-
-```bash
-docker compose down
-```
-
-Written by: [Erik W](https://github.com/knottem)
+This is a project made for the course Backend 2 where we rebuild our old project [Backend1Inl](https://github.com/knottem/webshop) in to microservices using [Docker](https://www.docker.com/) and [Docker Compose](https://docs.docker.com/compose/).
