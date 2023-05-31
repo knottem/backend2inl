@@ -21,7 +21,6 @@ import java.util.List;
 public class OrderController {
 
     private final Logger logger = LoggerFactory.getLogger(OrderController.class);
-
     private final OrderService orderService;
 
     public OrderController(OrderService orderService) {
